@@ -32,7 +32,7 @@ table = parsed_response.find(class_="table")
 # Como solo hay una tabla, se puede usar esta comprehensive list, sino habria que buscar la tabla que queremos
 # Thead = engloba los encabezados de la tabla /// Th = Indica cada encabezado de la tabla
 headers = [th.text for th in parsed_response.find("thead").find_all("th")]
-print(headers)
+#print(headers)
 
 # Creamos la lista con los datos
 data = []
@@ -57,7 +57,7 @@ df_limpio = df.dropna()
 df_limpio['Revenue'] = df_limpio['Revenue'].str.replace('$', '').str.replace('B', '').astype(float)
 # Quito columna 'Change', no la voy a necesitar
 df_limpio = df_limpio.drop("Change", axis=1)
-# Añado unidades de medida borradas y transformo en float
+# Añado unidades de medida borradas
 df_limpio = df_limpio.rename(columns={'Revenue' : 'Revenue ($ per B)'})
 print(df_limpio)
 #print(df_limpio.dtypes)
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS revenue_table(
             )
 ''')
 
-df_limpio.to_sql('revenue', con, if_exists='replace', index=False)
+df_limpio.to_sql('revenue_table', con, if_exists='replace', index=False)
 
 con.commit()
 print('Datos insertados correctamente')
@@ -128,3 +128,4 @@ plt.grid(True, linestyle='--', alpha=0.7)
 
 plt.savefig("revenue_plot_Scatter.png")
 plt.show()
+
